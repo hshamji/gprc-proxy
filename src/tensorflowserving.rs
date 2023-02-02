@@ -467,6 +467,7 @@ pub mod prediction_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::PredictRequest>,
         ) -> Result<tonic::Response<super::PredictResponse>, tonic::Status> {
+            // let a = self.inner.ready();
             self.inner
                 .ready()
                 .await
