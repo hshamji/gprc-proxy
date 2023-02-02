@@ -1,0 +1,9 @@
+[submodule "proto/googleapis"]
+	path = proto/googleapis
+	url = https://github.com/googleapis/googleapis
+[submodule "proto/tensorflow"]
+	path = proto/tensorflow
+	url = https://github.com/tensorflow/tensorflow
+[submodule "proto/serving"]
+	path = proto/serving
+	url = https://github.com/tensorflow/serving
