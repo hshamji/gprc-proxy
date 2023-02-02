@@ -11,18 +11,66 @@
 mod tensorflow;
 mod tensorflowserving;
 
+use bytes::{Buf, BufMut};
 use tensorflowserving::prediction_service_client;
 use crate::prediction_service_client::PredictionServiceClient;
 use crate::tensorflowserving::{PredictRequest, PredictResponse};
 use http;
+use tonic::codec::{Codec, DecodeBuf, Decoder, EncodeBuf, Encoder};
+use tonic::Status;
+
+
+struct IdentityCodec {}
+
+impl Codec for IdentityCodec {
+    type Encode = Vec<u8>;
+    type Decode = Vec<u8>;
+    type Encoder = IdentityCodec;
+    type Decoder = IdentityCodec;
+
+    fn encoder(&mut self) -> Self::Encoder {
+        Self{}
+    }
+
+    fn decoder(&mut self) -> Self::Decoder {
+        Self{}
+    }
+}
+
+impl Encoder for IdentityCodec {
+    type Item = Vec<u8>;
+    type Error = Status;
+
+    fn encode(&mut self, item: Self::Item, dst: &mut EncodeBuf<'_>) -> Result<(), Self::Error> {
+        // self.encode_impl(item, dst).expect("problem encoding");
+        for i in item {
+            dst.put_u8(i);
+        }
+        println!("Dst buffer is {:?}", dst);
+        Ok(())
+    }
+}
+
+
+impl Decoder for IdentityCodec {
+    type Item = Vec<u8>;
+    type Error = Status;
+
+    fn decode(&mut self, src: &mut DecodeBuf<'_>) -> Result<Option<Self::Item>, Self::Error> {
+        // todo!()
+        let out = src.chunk().to_vec();
+        // let out: Self::Item = src.into();
+        Ok(Some(out))
+    }
+}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // let a = tonic::client::GrpcService;
     let dst = "http://[::1]:8080";
-    let mut client = prediction_service_client::PredictionServiceClient::connect(dst).await?;
+    // let mut client = prediction_service_client::PredictionServiceClient::connect(dst).await?;
     let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-    let mut c2 = PredictionServiceClient::new(conn.clone());
+    // let mut c2 = PredictionServiceClient::new(conn.clone());
     let mut c3 = tonic::client::Grpc::new(conn);
 
     // let a = c3.ready();
@@ -35,7 +83,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 format!("Service was not ready: {}", e),
             )
         })?;
-    let codec = tonic::codec::ProstCodec::default();
+    // let codec = tonic::codec::ProstCodec::default();
+    let identity_codec = IdentityCodec{};
     let path = http::uri::PathAndQuery::from_static(
         "/tensorflow.serving.PredictionService/Predict",
     );
@@ -45,9 +94,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         output_filter: vec![]
     };
 
-    let r2 = tonic::IntoRequest::into_request(request);
-    let resp: tonic::Response<PredictResponse> = c3.unary(r2, path, codec).await?;
-    println!("Response: {:?}", resp.into_inner().outputs);
+    // let r2 = tonic::IntoRequest::into_request(request);
+    let r2 = tonic::IntoRequest::into_request(vec![18, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 1, 2, 3]);
+    let resp: tonic::Response<Vec<u8>> = c3.unary(r2, path, identity_codec).await?;
+    println!("Response: {:?}", resp.into_inner());
 
 
 
