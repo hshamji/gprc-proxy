@@ -1,3 +1,4 @@
+use std::fmt::Debug;
 use super::{Codec, DecodeBuf, Decoder, Encoder};
 use crate::codec::EncodeBuf;
 use crate::{Code, Status};
@@ -48,7 +49,14 @@ impl<T: Message> Encoder for ProstEncoder<T> {
         item.encode(buf)
             .expect("Message only errors if not enough space");
 
-        println!("HS: Encoded message: {:?}", buf);
+        // println!();
+        // print!("Encoded message: ");
+        println!("HS: Encoded Message: {:?}", buf.buf.to_vec());
+        // for b in buf {
+        //     print!(" {:?}", b);
+        // }
+        // println!("HS: Encoded message: {:?}", String::from_utf8( buf.));
+        // println!(format!("{}", buf));
         Ok(())
     }
 }
@@ -62,6 +70,8 @@ impl<U: Message + Default> Decoder for ProstDecoder<U> {
     type Error = Status;
 
     fn decode(&mut self, buf: &mut DecodeBuf<'_>) -> Result<Option<Self::Item>, Self::Error> {
+        println!("HS:Decoded message: {:?}", buf.buf.to_vec());
+
         let item = Message::decode(buf)
             .map(Option::Some)
             .map_err(from_decode_error)?;

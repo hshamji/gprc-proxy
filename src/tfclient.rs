@@ -11,13 +11,15 @@
 mod tensorflow;
 mod tensorflowserving;
 
+use std::collections::HashMap;
 use bytes::{Buf, BufMut};
 use tensorflowserving::prediction_service_client;
 use crate::prediction_service_client::PredictionServiceClient;
-use crate::tensorflowserving::{PredictRequest, PredictResponse};
+use crate::tensorflowserving::{ClassificationResult, GetModelMetadataRequest, PredictRequest, PredictResponse};
 use http;
 use tonic::codec::{Codec, DecodeBuf, Decoder, EncodeBuf, Encoder};
 use tonic::Status;
+use crate::tensorflow::TensorProto;
 
 
 struct IdentityCodec {}
@@ -83,22 +85,26 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 format!("Service was not ready: {}", e),
             )
         })?;
-    // let codec = tonic::codec::ProstCodec::default();
+    let mut codec = tonic::codec::ProstCodec::default();
     let identity_codec = IdentityCodec{};
     let path = http::uri::PathAndQuery::from_static(
         "/tensorflow.serving.PredictionService/Predict",
     );
     let request = PredictRequest{
         model_spec: None,
-        inputs: Default::default(),
+        inputs: HashMap::from([(String::from("onetwothree"), TensorProto{int_val: vec![1,2,3], ..Default::default()})]),
         output_filter: vec![]
     };
 
-    // let r2 = tonic::IntoRequest::into_request(request);
-    let r2 = tonic::IntoRequest::into_request(vec![18, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 1, 2, 3]);
-    let resp: tonic::Response<Vec<u8>> = c3.unary(r2, path, identity_codec).await?;
+    let r2 = tonic::IntoRequest::into_request(request);
+    // let r2 = tonic::IntoRequest::into_request(vec![18, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 1, 2, 3]);
+    // let resp: tonic::Response<Vec<u8>> = c3.unary(r2, path, identity_codec).await?;
+    // let resp: tonic::Response<Vec<u8>> = c3.unary(r2, path, codec).await?;
+    let resp: tonic::Response<PredictResponse> = c3.unary(r2, path, codec).await?;
     println!("Response: {:?}", resp.into_inner());
 
+    // let mut buf = tonic::codec::EncodeBuf::
+    // codec.encoder().encode(request, &mut buf );
 
 
     // let response = client.predict(PredictRequest{

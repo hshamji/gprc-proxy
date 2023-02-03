@@ -4,14 +4,14 @@ use bytes::{Buf, BufMut, BytesMut};
 /// A specialized buffer to decode gRPC messages from.
 #[derive(Debug)]
 pub struct DecodeBuf<'a> {
-    buf: &'a mut BytesMut,
-    len: usize,
+    pub buf: &'a mut BytesMut,
+    pub len: usize,
 }
 
 /// A specialized buffer to encode gRPC messages into.
 #[derive(Debug)]
 pub struct EncodeBuf<'a> {
-    buf: &'a mut BytesMut,
+    pub buf: &'a mut BytesMut,
 }
 
 impl<'a> DecodeBuf<'a> {
