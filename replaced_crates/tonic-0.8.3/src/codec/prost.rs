@@ -46,6 +46,7 @@ impl<T: Message> Encoder for ProstEncoder<T> {
     type Error = Status;
 
     fn encode(&mut self, item: Self::Item, buf: &mut EncodeBuf<'_>) -> Result<(), Self::Error> {
+        println!("Prost-Starting buffer: {:?}", buf.buf.to_vec());
         item.encode(buf)
             .expect("Message only errors if not enough space");
 

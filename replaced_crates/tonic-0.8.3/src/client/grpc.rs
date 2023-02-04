@@ -278,8 +278,10 @@ impl<T> Grpc<T> {
 
         let response = response.map(|body| {
             if expect_additional_trailers {
+                println!("Expected additional headers");
                 Streaming::new_response(decoder, body, status_code, encoding)
             } else {
+                println!("No additional headers");
                 Streaming::new_empty(decoder, body)
             }
         });

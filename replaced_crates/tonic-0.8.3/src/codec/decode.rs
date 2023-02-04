@@ -119,6 +119,7 @@ impl<T> Streaming<T> {
 impl StreamingInner {
     fn decode_chunk(&mut self) -> Result<Option<DecodeBuf<'_>>, Status> {
         if let State::ReadHeader = self.state {
+            println!("HS: Reading header: {:?}", self.buf.to_vec());
             if self.buf.remaining() < HEADER_SIZE {
                 return Ok(None);
             }
@@ -153,7 +154,7 @@ impl StreamingInner {
             };
             let len = self.buf.get_u32() as usize;
             self.buf.reserve(len);
-
+            println!("About to change status to ReadyBody");
             self.state = State::ReadBody {
                 compression: compression_encoding,
                 len,
@@ -187,7 +188,7 @@ impl StreamingInner {
             } else {
                 DecodeBuf::new(&mut self.buf, len)
             };
-
+            println!("HS:Decode chunk: {:?}", decode_buf.buf.to_vec());
             return Ok(Some(decode_buf));
         }
 
@@ -354,6 +355,7 @@ impl<T> Stream for Streaming<T> {
             // FIXME: implement the ability to poll trailers when we _know_ that
             // the consumer of this stream will only poll for the first message.
             // This means we skip the poll_trailers step.
+            println!("About to call decode chunk: {:?}, {:?}", self.inner.state, self.inner.buf.to_vec());
             if let Some(item) = self.decode_chunk()? {
                 return Poll::Ready(Some(Ok(item)));
             }

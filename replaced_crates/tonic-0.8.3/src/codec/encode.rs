@@ -113,6 +113,7 @@ where
         compress(encoding, uncompression_buf, buf, uncompressed_len)
             .map_err(|err| Status::internal(format!("Error compressing: {}", err)))?;
     } else {
+        println!("Trying to encode");
         encoder
             .encode(item, &mut EncodeBuf::new(buf))
             .map_err(|err| Status::internal(format!("Error encoding: {}", err)))?;
