@@ -12,7 +12,7 @@ mod tensorflow;
 mod tensorflowserving;
 
 use std::collections::HashMap;
-use bytes::{Buf, BufMut};
+use bytes::{Buf, BufMut, BytesMut};
 use tensorflowserving::prediction_service_client;
 use crate::prediction_service_client::PredictionServiceClient;
 use crate::tensorflowserving::{ClassificationResult, GetModelMetadataRequest, PredictRequest, PredictResponse};
@@ -79,14 +79,10 @@ impl Decoder for IdentityCodec {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // let a = tonic::client::GrpcService;
     let dst = "http://[::1]:8080";
-    // let mut client = prediction_service_client::PredictionServiceClient::connect(dst).await?;
     let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-    // let mut c2 = PredictionServiceClient::new(conn.clone());
     let mut c3 = tonic::client::Grpc::new(conn);
 
-    // let a = c3.ready();
     c3
         .ready()
         .await
@@ -96,41 +92,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 format!("Service was not ready: {}", e),
             )
         })?;
-    // let mut codec = tonic::codec::ProstCodec::default();
     let identity_codec = IdentityCodec{};
     let path = http::uri::PathAndQuery::from_static(
         "/tensorflow.serving.PredictionService/Predict",
     );
-    let request = PredictRequest{
-        model_spec: None,
-        inputs: HashMap::from([(String::from("onetwothree"), TensorProto{int_val: vec![1,2,3], ..Default::default()})]),
-        output_filter: vec![]
-    };
-    // let request: Vec<u8> = vec![0, 0, 0, 0, 0, 18, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 1, 2, 3];
     let request: Vec<u8> = vec![18, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 1, 2, 3];
 
     let r2 = tonic::IntoRequest::into_request(request);
-    // let r2 = tonic::IntoRequest::into_request(vec![18, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 1, 2, 3]);
-    // let resp: tonic::Response<Vec<u8>> = c3.unary(r2, path, identity_codec).await?;
-    let resp: tonic::Response<Vec<u8>> = c3.unary(r2, path, codec).await?;
-    // let resp: tonic::Response<PredictResponse> = c3.unary(r2, path, codec).await?;
+    let resp: tonic::Response<Vec<u8>> = c3.unary(r2, path, identity_codec).await?;
     println!("Response: {:?}", resp.into_inner());
-
-
-    let decoded: PredictResponse = prost::Message::decode(Buf:: resp.into_inner()).expect("error decoding");
-    println!("Decoded: {:?}", decoded.outputs);
-    // let mut buf = tonic::codec::EncodeBuf::
-    // codec.encoder().encode(request, &mut buf );
-
-
-    // let response = client.predict(PredictRequest{
-    // let response = c2.predict(PredictRequest{
-    //     model_spec: None,
-    //     inputs: Default::default(),
-    //     output_filter: vec![]
-    // })
-    //     .await?;
-    // println!("Response: {:?}", response.into_inner().outputs);
 
     Ok(())
 
