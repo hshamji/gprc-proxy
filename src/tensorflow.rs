@@ -66,10 +66,7 @@ pub struct FeatureList {
 pub struct FeatureLists {
     /// Map from feature name to feature list.
     #[prost(map = "string, message", tag = "1")]
-    pub feature_list: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        FeatureList,
-    >,
+    pub feature_list: ::std::collections::HashMap<::prost::alloc::string::String, FeatureList>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -352,9 +349,7 @@ pub struct ResourceHandleProto {
     pub maybe_type_name: ::prost::alloc::string::String,
     /// Data types and shapes for the underlying resource.
     #[prost(message, repeated, tag = "6")]
-    pub dtypes_and_shapes: ::prost::alloc::vec::Vec<
-        resource_handle_proto::DtypeAndShape,
-    >,
+    pub dtypes_and_shapes: ::prost::alloc::vec::Vec<resource_handle_proto::DtypeAndShape>,
 }
 /// Nested message and enum types in `ResourceHandleProto`.
 pub mod resource_handle_proto {
@@ -989,9 +984,7 @@ pub mod node_def {
         /// be {A, B}. This information can be used to map errors originating at the
         /// current node to some top level source code.
         #[prost(string, repeated, tag = "1")]
-        pub original_node_names: ::prost::alloc::vec::Vec<
-            ::prost::alloc::string::String,
-        >,
+        pub original_node_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// This is intended to store the list of names of the functions from the
         /// original graph that this node was derived. For example if this node, say
         /// C, was result of a fusion of node A in function FA and node B in function
@@ -1000,9 +993,7 @@ pub mod node_def {
         /// `original_node_names` can be used to map errors originating at the
         /// current ndoe to some top level source code.
         #[prost(string, repeated, tag = "2")]
-        pub original_func_names: ::prost::alloc::vec::Vec<
-            ::prost::alloc::string::String,
-        >,
+        pub original_func_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// Defines an operation. A NodeDef in a GraphDef specifies an Op by
@@ -1116,9 +1107,7 @@ pub mod op_def {
         pub type_list_attr: ::prost::alloc::string::String,
         /// The handle data for resource inputs.
         #[prost(message, repeated, tag = "7")]
-        pub handle_data: ::prost::alloc::vec::Vec<
-            super::resource_handle_proto::DtypeAndShape,
-        >,
+        pub handle_data: ::prost::alloc::vec::Vec<super::resource_handle_proto::DtypeAndShape>,
         /// For inputs: if true, the inputs are required to be refs.
         ///    By default, inputs can be either refs or non-refs.
         /// For outputs: if true, outputs are refs, otherwise they are not.
@@ -1240,17 +1229,13 @@ pub struct FunctionDef {
     /// A mapping from the output arg names from `signature` to the
     /// outputs from `node_def` that should be returned by the function.
     #[prost(map = "string, string", tag = "4")]
-    pub ret: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
+    pub ret:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// A mapping from control output names from `signature` to node names in
     /// `node_def` which should be control outputs of this function.
     #[prost(map = "string, string", tag = "6")]
-    pub control_ret: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
+    pub control_ret:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `FunctionDef`.
 pub mod function_def {
@@ -1260,10 +1245,7 @@ pub mod function_def {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ArgAttrs {
         #[prost(map = "string, message", tag = "1")]
-        pub attr: ::std::collections::HashMap<
-            ::prost::alloc::string::String,
-            super::AttrValue,
-        >,
+        pub attr: ::std::collections::HashMap<::prost::alloc::string::String, super::AttrValue>,
     }
 }
 /// GradientDef defines the gradient function of a function defined in
@@ -1498,9 +1480,7 @@ impl VariableAggregation {
             VariableAggregation::None => "VARIABLE_AGGREGATION_NONE",
             VariableAggregation::Sum => "VARIABLE_AGGREGATION_SUM",
             VariableAggregation::Mean => "VARIABLE_AGGREGATION_MEAN",
-            VariableAggregation::OnlyFirstReplica => {
-                "VARIABLE_AGGREGATION_ONLY_FIRST_REPLICA"
-            }
+            VariableAggregation::OnlyFirstReplica => "VARIABLE_AGGREGATION_ONLY_FIRST_REPLICA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1628,10 +1608,7 @@ pub struct TupleValue {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DictValue {
     #[prost(map = "string, message", tag = "1")]
-    pub fields: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        StructuredValue,
-    >,
+    pub fields: ::std::collections::HashMap<::prost::alloc::string::String, StructuredValue>,
 }
 /// Represents a (key, value) pair.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1702,17 +1679,7 @@ pub struct TypeSpecProto {
 }
 /// Nested message and enum types in `TypeSpecProto`.
 pub mod type_spec_proto {
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum TypeSpecClass {
         Unknown = 0,
@@ -1803,9 +1770,7 @@ pub mod trackable_object_graph {
         pub attributes: ::prost::alloc::vec::Vec<trackable_object::SerializedTensor>,
         /// Slot variables owned by this object.
         #[prost(message, repeated, tag = "3")]
-        pub slot_variables: ::prost::alloc::vec::Vec<
-            trackable_object::SlotVariableReference,
-        >,
+        pub slot_variables: ::prost::alloc::vec::Vec<trackable_object::SlotVariableReference>,
         /// The registered saver used to save this object. If this saver is not
         /// present when loading the checkpoint, then loading will fail.
         #[prost(message, optional, tag = "4")]
@@ -1887,10 +1852,8 @@ pub struct SavedObjectGraph {
     /// Information about captures and output structures in concrete functions.
     /// Referenced from SavedBareConcreteFunction and SavedFunction.
     #[prost(map = "string, message", tag = "2")]
-    pub concrete_functions: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        SavedConcreteFunction,
-    >,
+    pub concrete_functions:
+        ::std::collections::HashMap<::prost::alloc::string::String, SavedConcreteFunction>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1901,34 +1864,29 @@ pub struct SavedObject {
     /// Note: All kinds of SavedObject may have children, except
     /// "constant" and "captured_tensor".
     #[prost(message, repeated, tag = "1")]
-    pub children: ::prost::alloc::vec::Vec<
-        trackable_object_graph::trackable_object::ObjectReference,
-    >,
+    pub children:
+        ::prost::alloc::vec::Vec<trackable_object_graph::trackable_object::ObjectReference>,
     /// Ordered list of dependencies that must be loaded before this object.
     /// SavedModel loads with the bottom-up approach, by first creating all objects
     /// (in the order defined by the dependencies), then connecting the edges.
     #[prost(message, repeated, tag = "15")]
-    pub dependencies: ::prost::alloc::vec::Vec<
-        trackable_object_graph::trackable_object::ObjectReference,
-    >,
+    pub dependencies:
+        ::prost::alloc::vec::Vec<trackable_object_graph::trackable_object::ObjectReference>,
     /// Slot variables owned by this object. This describes the three-way
     /// (optimizer, variable, slot variable) relationship; none of the three
     /// depend on the others directly.
     ///
     /// Note: currently only valid if kind == "user_object".
     #[prost(message, repeated, tag = "3")]
-    pub slot_variables: ::prost::alloc::vec::Vec<
-        trackable_object_graph::trackable_object::SlotVariableReference,
-    >,
+    pub slot_variables:
+        ::prost::alloc::vec::Vec<trackable_object_graph::trackable_object::SlotVariableReference>,
     /// Stores the functions used to save and restore this object. At most one of
     /// `saveable_objects` or `registered_saver` is defined for each SavedObject.
     /// See the comment below for the difference between SaveableObject and
     /// registered savers.
     #[prost(map = "string, message", tag = "11")]
-    pub saveable_objects: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        SaveableObject,
-    >,
+    pub saveable_objects:
+        ::std::collections::HashMap<::prost::alloc::string::String, SaveableObject>,
     /// The name of the registered class of the form "{package}.{class_name}".
     /// This field is used to search for the registered class at loading time.
     #[prost(string, tag = "13")]
@@ -2097,9 +2055,7 @@ pub struct SavedVariable {
     ///
     /// This is only supported by experimental loaders at the moment.
     #[prost(message, repeated, tag = "8")]
-    pub experimental_distributed_variable_components: ::prost::alloc::vec::Vec<
-        SavedVariable,
-    >,
+    pub experimental_distributed_variable_components: ::prost::alloc::vec::Vec<SavedVariable>,
 }
 /// Represents `FunctionSpec` used in `Function`. This represents a
 /// function that has been wrapped as a TensorFlow `Function`.
@@ -2128,17 +2084,7 @@ pub mod function_spec {
     /// field, so we instead map to an enum.
     ///
     /// See `tf.function` for details.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum JitCompile {
         Default = 0,
@@ -2225,17 +2171,7 @@ pub mod saver_def {
     /// Usually, each subclass of BaseSaverBuilder works with a particular
     /// version/format.  However, it is possible that the same builder may be
     /// upgraded to support a newer checkpoint format in the future.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CheckpointFormatVersion {
         /// Internal legacy format.
@@ -2293,17 +2229,11 @@ pub struct MetaGraphDef {
     /// collection_def: Map from collection name to collections.
     /// See CollectionDef section for details.
     #[prost(map = "string, message", tag = "4")]
-    pub collection_def: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        CollectionDef,
-    >,
+    pub collection_def: ::std::collections::HashMap<::prost::alloc::string::String, CollectionDef>,
     /// signature_def: Map from user supplied key for a signature to a single
     /// SignatureDef.
     #[prost(map = "string, message", tag = "5")]
-    pub signature_def: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        SignatureDef,
-    >,
+    pub signature_def: ::std::collections::HashMap<::prost::alloc::string::String, SignatureDef>,
     /// Asset file def to be used with the defined graph.
     #[prost(message, repeated, tag = "6")]
     pub asset_file_def: ::prost::alloc::vec::Vec<AssetFileDef>,

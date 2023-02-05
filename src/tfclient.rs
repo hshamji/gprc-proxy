@@ -11,16 +11,17 @@
 mod tensorflow;
 mod tensorflowserving;
 
-use std::collections::HashMap;
-use bytes::{Buf, BufMut, BytesMut};
-use tensorflowserving::prediction_service_client;
 use crate::prediction_service_client::PredictionServiceClient;
-use crate::tensorflowserving::{ClassificationResult, GetModelMetadataRequest, PredictRequest, PredictResponse};
+use crate::tensorflow::TensorProto;
+use crate::tensorflowserving::{
+    ClassificationResult, GetModelMetadataRequest, PredictRequest, PredictResponse,
+};
+use bytes::{Buf, BufMut, BytesMut};
 use http;
+use std::collections::HashMap;
+use tensorflowserving::prediction_service_client;
 use tonic::codec::{Codec, DecodeBuf, Decoder, EncodeBuf, Encoder};
 use tonic::Status;
-use crate::tensorflow::TensorProto;
-
 
 struct IdentityCodec {}
 
@@ -31,11 +32,11 @@ impl Codec for IdentityCodec {
     type Decoder = IdentityCodec;
 
     fn encoder(&mut self) -> Self::Encoder {
-        Self{}
+        Self {}
     }
 
     fn decoder(&mut self) -> Self::Decoder {
-        Self{}
+        Self {}
     }
 }
 
@@ -55,7 +56,6 @@ impl Encoder for IdentityCodec {
         Ok(())
     }
 }
-
 
 impl Decoder for IdentityCodec {
     type Item = Vec<u8>;
@@ -83,25 +83,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
     let mut c3 = tonic::client::Grpc::new(conn);
 
-    c3
-        .ready()
-        .await
-        .map_err(|e| {
-            tonic::Status::new(
-                tonic::Code::Unknown,
-                format!("Service was not ready: {}", e),
-            )
-        })?;
-    let identity_codec = IdentityCodec{};
-    let path = http::uri::PathAndQuery::from_static(
-        "/tensorflow.serving.PredictionService/Predict",
-    );
-    let request: Vec<u8> = vec![18, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 1, 2, 3];
+    c3.ready().await.map_err(|e| {
+        tonic::Status::new(
+            tonic::Code::Unknown,
+            format!("Service was not ready: {}", e),
+        )
+    })?;
+    let identity_codec = IdentityCodec {};
+    let path =
+        http::uri::PathAndQuery::from_static("/tensorflow.serving.PredictionService/Predict");
+    let request: Vec<u8> = vec![
+        18, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 1, 2,
+        3,
+    ];
 
     let r2 = tonic::IntoRequest::into_request(request);
     let resp: tonic::Response<Vec<u8>> = c3.unary(r2, path, identity_codec).await?;
     println!("Response: {:?}", resp.into_inner());
 
     Ok(())
-
 }

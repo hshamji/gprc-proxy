@@ -6,7 +6,6 @@
 //     Ok(())
 // }
 
-
 // fn main(){
 //     tonic_build::configure()
 //         .out_dir("proto/out")
@@ -30,7 +29,6 @@ fn main() {
             // &["/Users/hshamji/Desktop/repos/to_delete/helloworld-tonic/proto"],
         ).unwrap();
 }
-
 
 // fn main() -> Result<(), Box<dyn std::error::Error>> {
 //     tonic_build::configure()

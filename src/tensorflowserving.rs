@@ -1,5 +1,5 @@
-use crate::tensorflow::TensorProto;
 use crate::tensorflow::Example;
+use crate::tensorflow::TensorProto;
 /// Specifies one or more fully independent input Examples.
 /// See examples at:
 ///      <https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/example/example.proto>
@@ -212,10 +212,7 @@ pub struct GetModelMetadataResponse {
     /// field name are listed in GetModelMetadataRequest. Currently supported:
     /// "signature_def".
     #[prost(map = "string, message", tag = "2")]
-    pub metadata: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost_types::Any,
-    >,
+    pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Any>,
 }
 /// Regression result for a single item (tensorflow.Example).
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -322,10 +319,7 @@ pub struct PredictRequest {
     /// input tensor names is stored in the SavedModel export as a prediction
     /// SignatureDef under the 'inputs' field.
     #[prost(map = "string, message", tag = "2")]
-    pub inputs: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        TensorProto,
-    >,
+    pub inputs: ::std::collections::HashMap<::prost::alloc::string::String, TensorProto>,
     /// Output filter.
     /// Names specified are alias names. The mapping from aliases to real output
     /// tensor names is stored in the SavedModel export as a prediction
@@ -345,16 +339,13 @@ pub struct PredictResponse {
     pub model_spec: ::core::option::Option<ModelSpec>,
     /// Output tensors.
     #[prost(map = "string, message", tag = "1")]
-    pub outputs: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        TensorProto,
-    >,
+    pub outputs: ::std::collections::HashMap<::prost::alloc::string::String, TensorProto>,
 }
 /// Generated client implementations.
 pub mod prediction_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
     use tonic::codegen::http::Uri;
+    use tonic::codegen::*;
     /// open source marker; do not remove
     /// PredictionService provides access to machine-learned models loaded by
     /// model_servers.
@@ -401,9 +392,8 @@ pub mod prediction_service_client {
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
         {
             PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -427,15 +417,12 @@ pub mod prediction_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::ClassificationRequest>,
         ) -> Result<tonic::Response<super::ClassificationResponse>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/tensorflow.serving.PredictionService/Classify",
@@ -447,15 +434,12 @@ pub mod prediction_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::RegressionRequest>,
         ) -> Result<tonic::Response<super::RegressionResponse>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/tensorflow.serving.PredictionService/Regress",
@@ -468,15 +452,12 @@ pub mod prediction_service_client {
             request: impl tonic::IntoRequest<super::PredictRequest>,
         ) -> Result<tonic::Response<super::PredictResponse>, tonic::Status> {
             // let a = self.inner.ready();
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/tensorflow.serving.PredictionService/Predict",
@@ -488,15 +469,12 @@ pub mod prediction_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::MultiInferenceRequest>,
         ) -> Result<tonic::Response<super::MultiInferenceResponse>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/tensorflow.serving.PredictionService/MultiInference",
@@ -508,15 +486,12 @@ pub mod prediction_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::GetModelMetadataRequest>,
         ) -> Result<tonic::Response<super::GetModelMetadataResponse>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/tensorflow.serving.PredictionService/GetModelMetadata",
@@ -580,10 +555,7 @@ pub mod prediction_service_server {
                 send_compression_encodings: Default::default(),
             }
         }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> InterceptedService<Self, F>
+        pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
         where
             F: tonic::service::Interceptor,
         {
@@ -611,10 +583,7 @@ pub mod prediction_service_server {
         type Response = http::Response<tonic::body::BoxBody>;
         type Error = std::convert::Infallible;
         type Future = BoxFuture<Self::Response, Self::Error>;
-        fn poll_ready(
-            &mut self,
-            _cx: &mut Context<'_>,
-        ) -> Poll<Result<(), Self::Error>> {
+        fn poll_ready(&mut self, _cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
             Poll::Ready(Ok(()))
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
@@ -623,15 +592,12 @@ pub mod prediction_service_server {
                 "/tensorflow.serving.PredictionService/Classify" => {
                     #[allow(non_camel_case_types)]
                     struct ClassifySvc<T: PredictionService>(pub Arc<T>);
-                    impl<
-                        T: PredictionService,
-                    > tonic::server::UnaryService<super::ClassificationRequest>
-                    for ClassifySvc<T> {
+                    impl<T: PredictionService>
+                        tonic::server::UnaryService<super::ClassificationRequest>
+                        for ClassifySvc<T>
+                    {
                         type Response = super::ClassificationResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::ClassificationRequest>,
@@ -648,11 +614,10 @@ pub mod prediction_service_server {
                         let inner = inner.0;
                         let method = ClassifySvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec)
-                            .apply_compression_config(
-                                accept_compression_encodings,
-                                send_compression_encodings,
-                            );
+                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
+                            accept_compression_encodings,
+                            send_compression_encodings,
+                        );
                         let res = grpc.unary(method, req).await;
                         Ok(res)
                     };
@@ -661,15 +626,9 @@ pub mod prediction_service_server {
                 "/tensorflow.serving.PredictionService/Regress" => {
                     #[allow(non_camel_case_types)]
                     struct RegressSvc<T: PredictionService>(pub Arc<T>);
-                    impl<
-                        T: PredictionService,
-                    > tonic::server::UnaryService<super::RegressionRequest>
-                    for RegressSvc<T> {
+                    impl<T: PredictionService> tonic::server::UnaryService<super::RegressionRequest> for RegressSvc<T> {
                         type Response = super::RegressionResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::RegressionRequest>,
@@ -686,11 +645,10 @@ pub mod prediction_service_server {
                         let inner = inner.0;
                         let method = RegressSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec)
-                            .apply_compression_config(
-                                accept_compression_encodings,
-                                send_compression_encodings,
-                            );
+                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
+                            accept_compression_encodings,
+                            send_compression_encodings,
+                        );
                         let res = grpc.unary(method, req).await;
                         Ok(res)
                     };
@@ -699,15 +657,9 @@ pub mod prediction_service_server {
                 "/tensorflow.serving.PredictionService/Predict" => {
                     #[allow(non_camel_case_types)]
                     struct PredictSvc<T: PredictionService>(pub Arc<T>);
-                    impl<
-                        T: PredictionService,
-                    > tonic::server::UnaryService<super::PredictRequest>
-                    for PredictSvc<T> {
+                    impl<T: PredictionService> tonic::server::UnaryService<super::PredictRequest> for PredictSvc<T> {
                         type Response = super::PredictResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::PredictRequest>,
@@ -724,11 +676,10 @@ pub mod prediction_service_server {
                         let inner = inner.0;
                         let method = PredictSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec)
-                            .apply_compression_config(
-                                accept_compression_encodings,
-                                send_compression_encodings,
-                            );
+                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
+                            accept_compression_encodings,
+                            send_compression_encodings,
+                        );
                         let res = grpc.unary(method, req).await;
                         Ok(res)
                     };
@@ -737,23 +688,18 @@ pub mod prediction_service_server {
                 "/tensorflow.serving.PredictionService/MultiInference" => {
                     #[allow(non_camel_case_types)]
                     struct MultiInferenceSvc<T: PredictionService>(pub Arc<T>);
-                    impl<
-                        T: PredictionService,
-                    > tonic::server::UnaryService<super::MultiInferenceRequest>
-                    for MultiInferenceSvc<T> {
+                    impl<T: PredictionService>
+                        tonic::server::UnaryService<super::MultiInferenceRequest>
+                        for MultiInferenceSvc<T>
+                    {
                         type Response = super::MultiInferenceResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::MultiInferenceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move {
-                                (*inner).multi_inference(request).await
-                            };
+                            let fut = async move { (*inner).multi_inference(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -764,11 +710,10 @@ pub mod prediction_service_server {
                         let inner = inner.0;
                         let method = MultiInferenceSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec)
-                            .apply_compression_config(
-                                accept_compression_encodings,
-                                send_compression_encodings,
-                            );
+                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
+                            accept_compression_encodings,
+                            send_compression_encodings,
+                        );
                         let res = grpc.unary(method, req).await;
                         Ok(res)
                     };
@@ -777,23 +722,18 @@ pub mod prediction_service_server {
                 "/tensorflow.serving.PredictionService/GetModelMetadata" => {
                     #[allow(non_camel_case_types)]
                     struct GetModelMetadataSvc<T: PredictionService>(pub Arc<T>);
-                    impl<
-                        T: PredictionService,
-                    > tonic::server::UnaryService<super::GetModelMetadataRequest>
-                    for GetModelMetadataSvc<T> {
+                    impl<T: PredictionService>
+                        tonic::server::UnaryService<super::GetModelMetadataRequest>
+                        for GetModelMetadataSvc<T>
+                    {
                         type Response = super::GetModelMetadataResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::GetModelMetadataRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move {
-                                (*inner).get_model_metadata(request).await
-                            };
+                            let fut = async move { (*inner).get_model_metadata(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -804,28 +744,23 @@ pub mod prediction_service_server {
                         let inner = inner.0;
                         let method = GetModelMetadataSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec)
-                            .apply_compression_config(
-                                accept_compression_encodings,
-                                send_compression_encodings,
-                            );
+                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
+                            accept_compression_encodings,
+                            send_compression_encodings,
+                        );
                         let res = grpc.unary(method, req).await;
                         Ok(res)
                     };
                     Box::pin(fut)
                 }
-                _ => {
-                    Box::pin(async move {
-                        Ok(
-                            http::Response::builder()
-                                .status(200)
-                                .header("grpc-status", "12")
-                                .header("content-type", "application/grpc")
-                                .body(empty_body())
-                                .unwrap(),
-                        )
-                    })
-                }
+                _ => Box::pin(async move {
+                    Ok(http::Response::builder()
+                        .status(200)
+                        .header("grpc-status", "12")
+                        .header("content-type", "application/grpc")
+                        .body(empty_body())
+                        .unwrap())
+                }),
             }
         }
     }
@@ -849,8 +784,7 @@ pub mod prediction_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: PredictionService> tonic::server::NamedService
-    for PredictionServiceServer<T> {
+    impl<T: PredictionService> tonic::server::NamedService for PredictionServiceServer<T> {
         const NAME: &'static str = "tensorflow.serving.PredictionService";
     }
 }
