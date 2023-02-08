@@ -61,19 +61,21 @@ impl PredictionService for MyPredService {
 
     async fn predict(
         &self,
-        request: Request<PredictRequest>,
-    ) -> Result<Response<PredictResponse>, Status> {
+        request: Request<Vec<u8>>,
+    ) -> Result<Response<Vec<u8>>, Status> {
         // todo!()
-        let reply = PredictResponse {
-            model_spec: None,
-            outputs: HashMap::from([(
-                String::from("some-response"),
-                TensorProto {
-                    int_val: vec![1, 1, 1, 1],
-                    ..Default::default()
-                },
-            )]),
-        };
+        // let reply = PredictResponse {
+        //     model_spec: None,
+        //     outputs: HashMap::from([(
+        //         String::from("some-response"),
+        //         TensorProto {
+        //             int_val: vec![1, 1, 1, 1],
+        //             ..Default::default()
+        //         },
+        //     )]),
+        // };
+        // let reply = vec![10, 20, 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 3, 2, 1];
+        let reply = vec![ 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 3, 2, 1];
         Ok(Response::new(reply))
     }
 

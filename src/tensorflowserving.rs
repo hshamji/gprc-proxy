@@ -520,8 +520,8 @@ pub mod prediction_service_server {
         /// Predict -- provides access to loaded TensorFlow model.
         async fn predict(
             &self,
-            request: tonic::Request<super::PredictRequest>,
-        ) -> Result<tonic::Response<super::PredictResponse>, tonic::Status>;
+            request: tonic::Request<Vec<u8>>,
+        ) -> Result<tonic::Response<Vec<u8>>, tonic::Status>;
         /// MultiInference API for multi-headed models.
         async fn multi_inference(
             &self,
@@ -657,12 +657,12 @@ pub mod prediction_service_server {
                 "/tensorflow.serving.PredictionService/Predict" => {
                     #[allow(non_camel_case_types)]
                     struct PredictSvc<T: PredictionService>(pub Arc<T>);
-                    impl<T: PredictionService> tonic::server::UnaryService<super::PredictRequest> for PredictSvc<T> {
-                        type Response = super::PredictResponse;
+                    impl<T: PredictionService> tonic::server::UnaryService<Vec<u8>> for PredictSvc<T> {
+                        type Response = Vec<u8>;
                         type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
-                            request: tonic::Request<super::PredictRequest>,
+                            request: tonic::Request<Vec<u8>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move { (*inner).predict(request).await };
