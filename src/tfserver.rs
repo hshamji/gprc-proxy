@@ -78,20 +78,6 @@ pub struct MyPredService {}
 
 #[tonic::async_trait]
 impl PredictionService for MyPredService {
-    async fn classify(
-        &self,
-        request: Request<ClassificationRequest>,
-    ) -> Result<Response<ClassificationResponse>, Status> {
-        todo!()
-    }
-
-    async fn regress(
-        &self,
-        request: Request<RegressionRequest>,
-    ) -> Result<Response<RegressionResponse>, Status> {
-        todo!()
-    }
-
     async fn predict(
         &self,
         request: Request<Vec<u8>>,
@@ -109,20 +95,6 @@ impl PredictionService for MyPredService {
         // };
         let reply = vec![ 10, 11, 111, 110, 101, 116, 119, 111, 116, 104, 114, 101, 101, 18, 5, 58, 3, 3, 2, 1];
         Ok(Response::new(reply))
-    }
-
-    async fn multi_inference(
-        &self,
-        request: Request<MultiInferenceRequest>,
-    ) -> Result<Response<MultiInferenceResponse>, Status> {
-        todo!()
-    }
-
-    async fn get_model_metadata(
-        &self,
-        request: Request<GetModelMetadataRequest>,
-    ) -> Result<Response<GetModelMetadataResponse>, Status> {
-        todo!()
     }
 }
 
